@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class JwtService implements IJwtRepository {
 
-  private static final Logger log = LoggerFactory.getLogger(JwtService.class);
+  private static final Logger logger = LoggerFactory.getLogger(JwtService.class);
   private final JwtRepository jwtRepository;
   private final AuthenticationManager authenticationManager;
   private final UserDetailsService userDetailService;
@@ -48,7 +48,7 @@ public class JwtService implements IJwtRepository {
   @Override
   public JwtAuthenticationResponse createUserAccount(CreateAccountRequest request) {
 
-    UserAddress userAddress = UserAddress.builder()
+    UserAddress userAddress = new UserAddress.Builder()
         .houseNumber(request.getHouseNumber())
         .city(request.getCity())
         .zipCode(request.getZipCode())
@@ -58,7 +58,7 @@ public class JwtService implements IJwtRepository {
         .build();
     userAddressService.save(userAddress);
 
-     User user = User.builder()
+     User user = new User.Builder()
         .username(request.getUsername())
         .firstname(request.getFirstname())
         .password(passwordEncoder.encode(request.getPassword()))
@@ -78,7 +78,7 @@ public class JwtService implements IJwtRepository {
 
     String jwtToken = jwtConfigService.generateToken(user);
 
-    log.info("User registered successfully with username: {}", user.getUsername());
+    logger.info("User registered successfully with username: {}", user.getUsername());
 
     Token token = new Token();
     token.setToken(jwtToken);
@@ -92,15 +92,12 @@ public class JwtService implements IJwtRepository {
 
   public String authenticate(LoginRequest request) {
 
-
     authenticationManager
         .authenticate(new UsernamePasswordAuthenticationToken(
-            request.getUsername(), request.getPassword())
-        );
+            request.getUsername(), request.getPassword()));
     // Generate new token
     User user = jwtRepository.findByUsername(request.getUsername());
 
-    System.out.println("User"+ user.toString());
     final String jwtToken = jwtConfigService.generateToken(user);
 
     //gets existing tokens for user
@@ -128,16 +125,14 @@ public class JwtService implements IJwtRepository {
   public Boolean isTokenValid(String token) {
     try {
       final String username = jwtConfigService.extractUsername(token);
-
-      System.out.println("extracted username from token: "+ username);
-      if (username != null) {
+       if (username != null) {
         final UserDetails userDetails = userDetailService.loadUserByUsername(username);
 
-        System.out.println("loadUserByUsername: "+ userDetails.getUsername());
+         logger.info("loadUserByUsername: {}", userDetails.getUsername());
         return jwtConfigService.isTokenValid(token, userDetails);
       }
     } catch (Exception e) {
-      log.error("Error while checking if token is valid", e);
+      logger.error("Error while checking if token is valid", e);
     }
     return false;
   }

@@ -32,6 +32,6 @@ public class UserService implements IUserRepository {
   public boolean findByEmailOrUsername(String email, String username) {
 
     System.out.println("in service: " + userRepository.findByEmailOrUsername(email, username));
-    return userRepository.findByEmailOrUsername(email, username)!=null? true:false;
+    return userRepository.findByEmailOrUsername(email, username)!=null;
   }
 }

@@ -78,18 +78,19 @@ public class UserAddress {
     this.countryCode = countryCode;
   }
 
-  private UserAddress(Builder builder) {
-  this.id = builder.userAddress.id;
-  this.houseNumber = builder.userAddress.houseNumber;
-  this.city = builder.userAddress.city;
-  this.zipCode = builder.userAddress.zipCode;
-  this.province = builder.userAddress.province;
-  this.country = builder.userAddress.country;
-  this.countryCode = builder.userAddress.countryCode;
-}
-
 public UserAddress() {}
-public static class Builder{
+
+  private UserAddress(Builder builder) {
+    this.id = builder.userAddress.id;
+    this.houseNumber = builder.userAddress.houseNumber;
+    this.city = builder.userAddress.city;
+    this.zipCode = builder.userAddress.zipCode;
+    this.province = builder.userAddress.province;
+    this.country = builder.userAddress.country;
+    this.countryCode = builder.userAddress.countryCode;
+  }
+
+  public static class Builder{
 
   private UserAddress userAddress;
 
@@ -131,10 +132,6 @@ public static class Builder{
   }
 }
 
-public static Builder builder(){
-  return new Builder();
-
-  }
 
 }
 

@@ -16,13 +16,16 @@ import java.util.function.Function;
 import javax.crypto.SecretKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
 public class JwtConfigService {
   private static final Logger log = LoggerFactory.getLogger(JwtConfigService.class);
-  private final String SECRET_KEY = "f61ef9704a9371effefe9e5e684dd9e1b4a49d9576c91f64191a9a159cfb765e";
+
+  @Value("${jwt.secret}")
+  private String SECRET_KEY;
   private final TokenRepository tokenRepository;
 
   public JwtConfigService(TokenRepository tokenRepository) {

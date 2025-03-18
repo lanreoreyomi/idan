@@ -31,6 +31,11 @@ public class User implements UserDetails {
   private String email;
   private LocalDate dateOfBirth;
 
+  @ManyToOne
+  @JoinColumn(name = "user_address_id")
+  private UserAddress userAddress;
+
+
   @Enumerated(EnumType.STRING)
   @Column(name = "role")
   Role role;
@@ -47,13 +52,6 @@ public class User implements UserDetails {
     return id;
   }
 
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -72,55 +70,31 @@ public class User implements UserDetails {
     return username;
   }
 
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
   public String getFirstname() {
     return firstname;
-  }
-
-  public void setFirstname(String firstname) {
-    this.firstname = firstname;
   }
 
   public String getLastname() {
     return lastname;
   }
 
-  public void setLastname(String lastname) {
-    this.lastname = lastname;
-  }
-
   public String getEmail() {
     return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
   }
 
   public LocalDate getDateOfBirth() {
     return dateOfBirth;
   }
 
-  public void setDateOfBirth(LocalDate dateOfBirth) {
-    this.dateOfBirth = dateOfBirth;
-  }
-
   public UserAddress getUserAddress() {
     return userAddress;
   }
 
-  public void setUserAddress(UserAddress userAddress) {
-    this.userAddress = userAddress;
+
+  public User(){
   }
 
-  @ManyToOne
-  @JoinColumn(name = "user_address_id")
-  private UserAddress userAddress;
-
-private User(Builder builder){
+  private User(Builder builder){
   this.id = builder.user.id;
   this.username = builder.user.username;
   this.firstname = builder.user.firstname;
@@ -132,10 +106,6 @@ private User(Builder builder){
   this.password = builder.user.password;
 
 }
-
-public User(){
-}
-
   // Builder class
   public static class Builder {
 
@@ -191,9 +161,6 @@ public User(){
     }
   }
 
-  public static Builder builder(){
-    return new Builder();
-  }
   @Override
   public boolean equals(Object o) {
     if (o == null || getClass() != o.getClass()) {
@@ -233,6 +200,5 @@ public User(){
         ", role=" + role +
         '}';
   }
-
 
 }

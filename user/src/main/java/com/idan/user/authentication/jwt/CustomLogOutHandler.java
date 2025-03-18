@@ -30,7 +30,7 @@ public class CustomLogOutHandler implements LogoutHandler {
 
     String authHeader = request.getHeader("Authorization");
     if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-
+    return;
     }
     String token = null;
     try{

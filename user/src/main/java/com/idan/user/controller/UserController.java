@@ -69,7 +69,7 @@ public class UserController {
 
     } catch (Exception e) {
       System.out.println(e.getMessage());
-      logger.error("Error creating user", e.getMessage());
+      logger.error("Error creating user {}", e.getMessage());
       return new ResponseEntity<>("Error creating user", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -107,7 +107,7 @@ public class UserController {
 
   @PostMapping("/login")
   public ResponseEntity<String> logIn(@RequestBody LoginRequest loginRequest) {
-    logger.info("Log in Request {}", loginRequest.toString());
+    logger.info("Log in Request from: {}", loginRequest.getUsername());
 
     if (loginRequest.getUsername() == null || loginRequest.getUsername().trim().isEmpty()
         || loginRequest.getPassword() == null || loginRequest.getPassword().trim().isEmpty()) {
@@ -118,7 +118,7 @@ public class UserController {
     String token;
     try {
       token = jwtService.authenticate(loginRequest);
-      if (token == null && token.isEmpty()) {
+      if (token == null || token.isEmpty()) {
         logger.info("Invalid log in request for {}", loginRequest.getUsername());
         return new ResponseEntity<>("Invalid login request", HttpStatus.UNAUTHORIZED);
       }
